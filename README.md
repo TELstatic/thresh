@@ -2,6 +2,17 @@
 
 > Laravel API 文档生成器,可以将基于 Laravel 项目的项目代码，自动生成 json 或 md 格式的描述文件。
 
+<p align="center">
+    <img src="https://github.styleci.io/repos/360407965/shield?branch=master" alt="StyleCI Shield">
+    <img src="https://img.shields.io/packagist/v/telstatic/thresh.svg?style=flat-square" alt="licence" />
+    <img src="https://img.shields.io/packagist/l/telstatic/thresh.svg?style=flat-square" alt="licence" />
+    <img src="https://img.shields.io/github/languages/code-size/telstatic/thresh.svg?style=flat-square" alt="code size" />
+    <img src="https://img.shields.io/packagist/dt/telstatic/thresh.svg?style=flat-square" alt="downloads" />
+    <img src="https://img.shields.io/packagist/dm/telstatic/thresh.svg?style=flat-square" alt="downloads" />
+    <img src="https://img.shields.io/packagist/php-v/telstatic/thresh.svg?style=flat-square" alt="downloads" />
+
+</p>
+
 ## 安装
 
 ```shell

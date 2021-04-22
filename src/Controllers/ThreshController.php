@@ -6,22 +6,24 @@ use TELstatic\Thresh\Requests\ThreshRequest;
 use Illuminate\Http\Request;
 
 /**
- * 文档管理
+ * 文档管理.
+ *
  * @desc 文档管理
- * @package TELstatic\Thresh
+ *
  * @author TELstatic
  */
 class ThreshController
 {
     /**
-     * 测试列表
+     * 测试列表.
+     *
      * @desc 测试列表
+     *
      * @author TELstatic
-     * Date: 2021/4/22/0022
      */
     public function index(Request $request)
     {
-        if ($request->get('type', 'view') === 'view') {
+        if ('view' === $request->get('type', 'view')) {
             return view('thresh::doc');
         }
 
@@ -52,7 +54,7 @@ class ThreshController
         // 指定中间件时 添加 headers 常用在 api 接口添加 Authorization header
         $middleware = 'throttle:60,1';
 
-        app('thresh')->load($blackControllers, $whiteNamespaceList, 2);
+        app('thresh')->load($blackControllers, $whiteNamespaceList);
 
         switch ($request->get('type')) {
             default:
@@ -69,44 +71,47 @@ class ThreshController
     }
 
     /**
-     * 测试创建
+     * 测试创建.
+     *
      * @desc 测试创建
+     *
      * @author TELstatic
-     * Date: 2021/4/22/0022
      */
     public function create()
     {
-
     }
 
     /**
-     * 测试编辑
-     * @desc 测试编辑
+     * 测试编辑.
+     *
+     * @desc 测试编辑.
+     *
      * @param $id
+     *
      * @author TELstatic
-     * Date: 2021/4/22/0022
      */
     public function edit($id)
     {
-
     }
 
     /**
-     * 测试显示
+     * 测试显示.
+     *
      * @desc 测试显示
+     *
      * @param $id
+     *
      * @author TELstatic
-     * Date: 2021/4/22/0022
      */
     public function show($id)
     {
-
     }
 
     /**
-     * 测试保存
+     * 测试保存.
+     *
      * @desc 测试保存
-     * @param ThreshRequest $request
+     *
      * @params title string yes null 标题
      * @params name string yes null 名称
      * @params sort integer yes 0 排序
@@ -114,8 +119,8 @@ class ThreshController
      * @params thumb string yes null 封面
      * @params enabled_at string yes null 生效时间
      * @params disabled_at string yes null 失效时间
+     *
      * @author TELstatic
-     * Date: 2021/4/22/0022
      */
     public function store(ThreshRequest $request)
     {
@@ -123,10 +128,12 @@ class ThreshController
     }
 
     /**
-     * 测试更新
+     * 测试更新.
+     *
      * @desc 测试更新
+     *
      * @param $id
-     * @param ThreshRequest $request
+     *
      * @params title string yes null 标题
      * @params name string yes null 名称
      * @params sort integer yes 0 排序
@@ -134,8 +141,8 @@ class ThreshController
      * @params thumb string yes null 封面
      * @params enabled_at string yes null 生效时间
      * @params disabled_at string yes null 失效时间
+     *
      * @author TELstatic
-     * Date: 2021/4/22/0022
      */
     public function update($id, ThreshRequest $request)
     {
@@ -143,14 +150,17 @@ class ThreshController
     }
 
     /**
-     * 测试删除
+     * 测试删除.
+     *
      * @desc 测试删除
+     *
      * @param $id
+     *
      * @author TELstatic
-     * Date: 2021/4/22/0022
      */
     public function destroy($id)
     {
 
     }
+
 }

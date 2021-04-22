@@ -56,7 +56,6 @@ class Thresh
 
     /**
      * 加载路由
-     * Date: 2020/4/17
      */
     protected function loadRoutes()
     {
@@ -65,7 +64,6 @@ class Thresh
 
     /**
      * 加载控制器方法
-     * Date: 2020/4/17
      */
     protected function loadActions()
     {
@@ -74,7 +72,7 @@ class Thresh
 
             //去除 闭包路由
             if (isset($action['controller'])) {
-                list ($controller) = explode('@', $action['controller']);
+                list($controller) = explode('@', $action['controller']);
 
                 //去除 黑名单
                 if (in_array($controller, $this->blackControllerList)) {
@@ -87,7 +85,7 @@ class Thresh
             if (in_array($action['namespace'], $this->whiteNamespaceList)) {
                 if (count($route->methods) > 1) {
                     foreach ($route->methods as $method) {
-                        if ($method == 'HEAD') {
+                        if ('HEAD' == $method) {
                             continue;
                         }
 
@@ -108,15 +106,15 @@ class Thresh
     }
 
     /**
-     * 生成权限
-     * Date: 2020/4/17
+     * 生成权限.
+     *
      * @throws \ReflectionException
      */
     protected function loadPermissions()
     {
         //获取 注释
         foreach ($this->actions as $action) {
-            list ($controllerName, $methodName) = explode('@', $action['controller']);
+            list($controllerName, $methodName) = explode('@', $action['controller']);
 
             $controller = new \ReflectionClass($controllerName);
 
@@ -127,8 +125,8 @@ class Thresh
     }
 
     /**
-     * 获取权限
-     * Date: 2020/4/17
+     * 获取权限.
+     *
      * @return array
      */
     public function getPermissions()
@@ -137,7 +135,7 @@ class Thresh
     }
 
     /**
-     * 获取默认权限
+     * 获取默认权限.
      */
     public function getOriginPermissions()
     {
@@ -145,10 +143,11 @@ class Thresh
     }
 
     /**
-     * 获取默认权限
+     * 获取默认权限.
+     *
      * @desc 获取默认权限
+     *
      * @author TELstatic
-     * Date: 2020/8/19/0019
      */
     public function getDefaultPermissions()
     {
@@ -156,12 +155,15 @@ class Thresh
     }
 
     /**
-     * 获取禁用权限
+     * 获取禁用权限.
+     *
      * @desc 获取禁用权限
+     *
      * @param array $blackPermissions
+     *
      * @return array
+     *
      * @author TELstatic
-     * Date: 2021/4/8/0008
      */
     public function getBlackPermissions($blackPermissions = [])
     {
@@ -173,13 +175,15 @@ class Thresh
     }
 
     /**
-     * 导出 Markdown 文档
+     * 导出 Markdown 文档.
+     *
      * @desc 导出 Markdown 文档
+     *
      * @param $name
      * @param null $middleware
      * @param array $headers
+     *
      * @author TELstatic
-     * Date: 2021/4/21/0021
      */
     public function exportMarkdown($name, $middleware = null, $headers = [])
     {
@@ -197,7 +201,7 @@ class Thresh
         echo PHP_EOL;
         echo PHP_EOL;
 
-        echo "## 目录";
+        echo '## 目录';
         echo PHP_EOL;
         echo PHP_EOL;
 
@@ -300,7 +304,7 @@ class Thresh
                 $path = explode('/', $method['uri']);
 
                 $variables = array_filter($path, function ($item) {
-                    return strpos($item, '{') === 0;
+                    return 0 === strpos($item, '{');
                 });
 
                 if (!empty($variables)) {
@@ -335,14 +339,17 @@ class Thresh
     }
 
     /**
-     * 导出 Postman 配置
+     * 导出 Postman 配置.
+     *
      * @desc 导出 Postman 配置
+     *
      * @param string $name 文档名称
      * @param null $middleware
      * @param array $headers
+     *
      * @return array
+     *
      * @author TELstatic
-     * Date: 2021/4/21/0021
      */
     public function exportPostman($name, $middleware = null, $headers = [])
     {
@@ -415,10 +422,10 @@ class Thresh
                             'key'         => $param['name'],
                             'description' => $param['comment'],
                             'type'        => 'text',
-                            'value'       => $param['default'] === 'null' ? '' : $param['default'],
+                            'value'       => 'null' === $param['default'] ? '' : $param['default'],
                         ];
 
-                        if ($param['type'] === 'file') {
+                        if ('file' === $param['type']) {
                             $form['src'] = '';
                             $form['type'] = 'file';
 
@@ -455,20 +462,22 @@ class Thresh
                 ];
             }
 
-            $i++;
+            ++$i;
         }
 
         return $data;
     }
 
     /**
-     * 导出 Swagger 配置文件
+     * 导出 Swagger 配置文件.
+     *
      * @desc 导出 Swagger 配置文件
+     *
      * @param $name
      * @param $middleware
      * @param $headers
+     *
      * @author TELstatic
-     * Date: 2021/4/22/0022
      */
     public function exportSwagger($name, $middleware, $headers)
     {
@@ -480,7 +489,7 @@ class Thresh
             ],
             'host'     => $_SERVER['HTTP_HOST'],
             'basePath' => '/',
-            'schemes'  => $_SERVER['SERVER_PORT'] == 80 ? ['http'] : ['http', 'https'],
+            'schemes'  => 80 == $_SERVER['SERVER_PORT'] ? ['http'] : ['http', 'https'],
         ];
 
         foreach ($this->getPermissions() as $permission) {
@@ -505,7 +514,7 @@ class Thresh
                     }
                 }
 
-                if ($method['method'] !== 'GET') {
+                if ('GET' !== $method['method']) {
                     $schema['consumes'] = [
                         'multipart/form-data',
                     ];
@@ -514,7 +523,7 @@ class Thresh
                 $path = explode('/', $method['uri']);
 
                 $variables = array_filter($path, function ($item) {
-                    return strpos($item, '{') === 0;
+                    return 0 === strpos($item, '{');
                 });
 
                 foreach ($variables as $variable) {
@@ -528,10 +537,10 @@ class Thresh
 
                 foreach ($method['params'] as $param) {
                     $parameter = [
-                        'in'          => $method['method'] === 'GET' ? 'query' : 'body',
+                        'in'          => 'GET' === $method['method'] ? 'query' : 'body',
                         'name'        => $param['name'],
                         'description' => $param['comment'],
-                        'required'    => $param['require'] == 'yes',
+                        'required'    => 'yes' === $param['require'],
                         'type'        => $param['type'],
                     ];
 
@@ -554,10 +563,10 @@ class Thresh
     }
 
     /**
-     * 获取控制器注释
+     * 获取控制器注释.
+     *
      * @param $controllerName
      * @param \ReflectionClass $controller
-     * Date: 2020/4/17
      */
     protected function getControllerDoc($controllerName, \ReflectionClass $controller)
     {
@@ -587,12 +596,15 @@ class Thresh
 
     /**
      * 获取键值
+     *
      * @desc 获取键值
+     *
      * @param $methodName
      * @param $method
+     *
      * @return string
+     *
      * @author TELstatic
-     * Date: 2021/4/14/0014
      */
     protected function getKey($methodName, $method)
     {
@@ -600,12 +612,15 @@ class Thresh
     }
 
     /**
-     * 获取路径
+     * 获取路径.
+     *
      * @desc 获取路径
+     *
      * @param $uri
+     *
      * @return string|string[]|null
+     *
      * @author TELstatic
-     * Date: 2021/4/14/0014
      */
     protected function getUri($uri)
     {
@@ -620,11 +635,13 @@ class Thresh
     }
 
     /**
-     * 生成权限
+     * 生成权限.
+     *
      * @desc 生成权限
+     *
      * @param $action
+     *
      * @return mixed|string
-     * Date: 2021/4/14/0014
      */
     protected function getPermission($action)
     {
@@ -632,13 +649,14 @@ class Thresh
     }
 
     /**
-     * 获取验证规则
+     * 获取验证规则.
+     *
      * @desc 获取验证规则
+     *
      * @param $parameters
      * @param $method
-     * @return array
      *
-     * Date: 2021/4/14/0014
+     * @return array
      */
     protected function getMethodRules($parameters, $method)
     {
@@ -682,12 +700,14 @@ class Thresh
     }
 
     /**
-     * 获取方法注释
+     * 获取方法注释.
+     *
      * @param $controllerName
      * @param $methodName
      * @param $action
+     *
      * @param \ReflectionClass $controller
-     * Date: 2020/4/17
+     *
      * @throws \ReflectionException
      */
     protected function getMethodDoc($controllerName, $methodName, $action, \ReflectionClass $controller)
@@ -749,20 +769,21 @@ class Thresh
     }
 
     /**
-     * 格式化注释
-     * @param $doc
-     * Date: 2020/4/17
+     * 格式化注释.
+     *
+     * @param $haystack
+     *
      * @return bool|mixed
      */
-    protected function formatDoc($doc)
+    protected function formatDoc($haystack)
     {
         //格式错误
-        if (preg_match('#^/\*\*(.*)\*/#s', $doc, $comment) === false) {
+        if (false === preg_match('#^/\*\*(.*)\*/#s', $haystack, $comment)) {
             return false;
         }
 
         //移除 符号 *
-        if (preg_match_all('#^\s*\*(.*)#m', trim($comment[1]), $lines) === false) {
+        if (false === preg_match_all('#^\s*\*(.*)#m', trim($comment[1]), $lines)) {
             return false;
         } else {
             return $lines[1];
@@ -770,9 +791,10 @@ class Thresh
     }
 
     /**
-     * 格式化名称
+     * 格式化名称.
+     *
      * @param $haystack
-     * Date: 2020/4/17
+     *
      * @return mixed
      */
     protected function formatName($haystack)
@@ -783,9 +805,10 @@ class Thresh
     }
 
     /**
-     * 格式化中文名称
+     * 格式化中文名称.
+     *
      * @param $haystack
-     * Date: 2020/4/17
+     *
      * @return string|null
      */
     protected function formatTitle($haystack)
@@ -794,9 +817,10 @@ class Thresh
     }
 
     /**
-     * 格式化描述
+     * 格式化描述.
+     *
      * @param $haystack
-     * Date: 2020/4/17
+     *
      * @return array
      */
     protected function formatDesc($haystack)
@@ -805,7 +829,7 @@ class Thresh
         $desc = [];
 
         foreach ($haystack as $line) {
-            if (preg_match($reg, trim($line), $tmp) !== false) {
+            if (false !== preg_match($reg, trim($line), $tmp)) {
                 if (!empty($tmp)) {
                     $desc[] = trim(str_replace('@desc', '', $tmp[0]));
                 }
@@ -816,9 +840,10 @@ class Thresh
     }
 
     /**
-     * 格式化参数
+     * 格式化参数.
+     *
      * @param $haystack
-     * Date: 2020/4/17
+     *
      * @return array
      */
     protected function formatParams($haystack)
@@ -827,12 +852,11 @@ class Thresh
         $params = [];
 
         foreach ($haystack as $k => $line) {
-            // dd($haystack);
-            if (preg_match($reg, trim($line), $tmp) !== false) {
+            if (false !== preg_match($reg, trim($line), $tmp)) {
                 if (!empty($tmp)) {
                     $temp = explode(' ', trim(str_replace('@params', '', $tmp[0])));
 
-                    if (count($temp) == 7) {
+                    if (7 === count($temp)) {
                         $params[$k]['name'] = $temp[0];
                         $params[$k]['type'] = $temp[1];
                         $params[$k]['require'] = $temp[2];
@@ -842,7 +866,7 @@ class Thresh
                         $params[$k]['comment'] = $temp[6];
                     }
 
-                    if (count($temp) == 5) {
+                    if (5 === count($temp)) {
                         $params[$k]['name'] = $temp[0];
                         $params[$k]['type'] = $temp[1];
                         $params[$k]['require'] = $temp[2];
@@ -859,9 +883,10 @@ class Thresh
     }
 
     /**
-     * 格式化返回
+     * 格式化返回.
+     *
      * @param $haystack
-     * Date: 2020/4/17
+     *
      * @return array
      */
     protected function formatReturns($haystack)
@@ -870,7 +895,7 @@ class Thresh
         $returns = [];
 
         foreach ($haystack as $i => $line) {
-            if (preg_match($reg, trim($line), $tmp) !== false) {
+            if (false !== preg_match($reg, trim($line), $tmp)) {
                 if (!empty($tmp)) {
                     $temp = explode(' ', trim(str_replace('@return', '', $tmp[0])));
 
@@ -885,19 +910,22 @@ class Thresh
     }
 
     /**
-     * 格式化默认权限
+     * 格式化默认权限.
+     *
      * @desc 格式化默认权限
+     *
      * @param $haystack
+     *
      * @return bool
+     *
      * @author TELstatic
-     * Date: 2020/8/19/0019
      */
     protected function formatDefault($haystack)
     {
         $reg = '/@default.*/i';
 
         foreach ($haystack as $line) {
-            if (preg_match($reg, trim($line), $tmp) === 1) {
+            if (1 === preg_match($reg, trim($line), $tmp)) {
                 return true;
             }
         }
@@ -906,19 +934,22 @@ class Thresh
     }
 
     /**
-     * 格式化禁用权限
+     * 格式化禁用权限.
+     *
      * @desc 格式化禁用权限
+     *
      * @param $haystack
+     *
      * @return bool
+     *
      * @author TELstatic
-     * Date: 2020/8/19/0019
      */
     protected function formatBlack($haystack)
     {
         $reg = '/@black.*/i';
 
         foreach ($haystack as $line) {
-            if (preg_match($reg, trim($line), $tmp) === 1) {
+            if (1 === preg_match($reg, trim($line), $tmp)) {
                 return true;
             }
         }
