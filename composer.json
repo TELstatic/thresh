@@ -1,0 +1,36 @@
+{
+    "name": "telstatic/thresh",
+    "description": "laravel 文档生成器",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "swagger",
+        "postman"
+    ],
+    "authors": [
+        {
+            "name": "TELstatic",
+            "email": "telstatic@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "TELstatic\\Thresh\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TELstatic\\Thresh\\ThreshServiceProvider"
+            ],
+            "aliases": {
+                "Thresh": "TELstatic\\Thresh\\Facade"
+            }
+        }
+    }
+}
