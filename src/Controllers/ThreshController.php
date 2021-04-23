@@ -38,7 +38,7 @@ class ThreshController
         ];
 
         // 导出文件名
-        $name = 'Thresh 测试文档 '.date('Y-m-d H:i:s');
+        $name = 'Thresh 测试文档';
 
         $headers = [
             [
@@ -66,6 +66,9 @@ class ThreshController
                 break;
             case 'swagger':
                 return app('thresh')->exportSwagger($name, $middleware, $headers);
+                break;
+            case 'permission':
+                return app('thresh')->getPermissions($name, $middleware, $headers);
                 break;
         }
     }
@@ -119,6 +122,14 @@ class ThreshController
      * @params thumb string yes null 封面
      * @params enabled_at string yes null 生效时间
      * @params disabled_at string yes null 失效时间
+     * @params variants[0][title] string yes null 多规格1标题
+     * @params variants[0][thumb] string yes null 多规格1封面
+     * @params variants[0][price] string yes null 多规格1价格
+     * @params variants[0][stock] string yes null 多规格1库存
+     * @params variants[1][title] string yes null 多规格2标题
+     * @params variants[1][thumb] string yes null 多规格2封面
+     * @params variants[1][price] string yes null 多规格2价格
+     * @params variants[1][stock] string yes null 多规格2库存
      *
      * @author TELstatic
      */
@@ -141,12 +152,20 @@ class ThreshController
      * @params thumb string yes null 封面
      * @params enabled_at string yes null 生效时间
      * @params disabled_at string yes null 失效时间
+     * @params variants[0][title] string yes null 多规格1标题
+     * @params variants[0][thumb] string yes null 多规格1封面
+     * @params variants[0][price] string yes null 多规格1价格
+     * @params variants[0][stock] string yes null 多规格1库存
+     * @params variants[1][title] string yes null 多规格2标题
+     * @params variants[1][thumb] string yes null 多规格2封面
+     * @params variants[1][price] string yes null 多规格2价格
+     * @params variants[1][stock] string yes null 多规格2库存
      *
      * @author TELstatic
      */
     public function update($id, ThreshRequest $request)
     {
-
+        return $request->all();
     }
 
     /**

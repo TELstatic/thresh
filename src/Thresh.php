@@ -319,7 +319,7 @@ class Thresh
                     foreach ($variables as $variable) {
                         $variable = str_replace(['{', '}'], '', $variable);
 
-                        $type = in_array($variable, $this->ruleWhiteList) ? 'int' : 'string';
+                        $type = in_array($variable, $this->ruleWhiteList) ? 'integer' : 'string';
 
                         echo "|   {$variable}    |  {$type}  | yes | null |  {$variable}  |";
                         echo PHP_EOL;
@@ -381,7 +381,7 @@ class Thresh
                 ];
 
                 $variables = array_filter($path, function ($item) {
-                    return str_starts_with($item, ':');
+                    return 0 === strpos($item, ':');
                 });
 
                 if (!empty($variables)) {
@@ -411,7 +411,7 @@ class Thresh
 
                         $url['query'][] = $query;
                     }
-                } else {
+                } elseif ('POST' === $method['method']) {
                     $body = [
                         'mode'     => 'formdata',
                         'formdata' => [],
@@ -433,6 +433,29 @@ class Thresh
                         }
 
                         $body['formdata'][] = $form;
+                    }
+                } else {
+                    $body = [
+                        'mode'       => 'urlencoded',
+                        'urlencoded' => [],
+                    ];
+
+                    foreach ($method['params'] as $param) {
+                        $form = [
+                            'key'         => $param['name'],
+                            'description' => $param['comment'],
+                            'type'        => 'text',
+                            'value'       => 'null' === $param['default'] ? '' : $param['default'],
+                        ];
+
+                        if ('file' === $param['type']) {
+                            $form['src'] = '';
+                            $form['type'] = 'file';
+
+                            unset($form['value']);
+                        }
+
+                        $body['urlencoded'][] = $form;
                     }
                 }
 
@@ -851,33 +874,36 @@ class Thresh
         $reg = '/@params.*/i';
         $params = [];
 
-        foreach ($haystack as $k => $line) {
+        $i = 0;
+
+        foreach ($haystack as $line) {
             if (false !== preg_match($reg, trim($line), $tmp)) {
                 if (!empty($tmp)) {
                     $temp = explode(' ', trim(str_replace('@params', '', $tmp[0])));
 
                     if (7 === count($temp)) {
-                        $params[$k]['name'] = $temp[0];
-                        $params[$k]['type'] = $temp[1];
-                        $params[$k]['require'] = $temp[2];
-                        $params[$k]['default'] = $temp[3];
-                        $params[$k]['min'] = $temp[4];
-                        $params[$k]['max'] = $temp[5];
-                        $params[$k]['comment'] = $temp[6];
+                        $params[$i]['name'] = $temp[0];
+                        $params[$i]['type'] = $temp[1];
+                        $params[$i]['require'] = $temp[2];
+                        $params[$i]['default'] = $temp[3];
+                        $params[$i]['min'] = $temp[4];
+                        $params[$i]['max'] = $temp[5];
+                        $params[$i]['comment'] = $temp[6];
                     }
 
                     if (5 === count($temp)) {
-                        $params[$k]['name'] = $temp[0];
-                        $params[$k]['type'] = $temp[1];
-                        $params[$k]['require'] = $temp[2];
-                        $params[$k]['default'] = $temp[3];
-                        $params[$k]['comment'] = $temp[4];
+                        $params[$i]['name'] = $temp[0];
+                        $params[$i]['type'] = $temp[1];
+                        $params[$i]['require'] = $temp[2];
+                        $params[$i]['default'] = $temp[3];
+                        $params[$i]['comment'] = $temp[4];
                     }
+
+                    ++$i;
                 }
             }
         }
 
-        rsort($params);
 
         return $params;
     }

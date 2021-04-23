@@ -28,7 +28,7 @@ $ composer require telstatic/thresh -vvv
 ## 使用示例
 
 详见 `TELstatic\Thresh\Controllers\ThreshController`
-安装扩展后，访问 `http://{you-domain}/thresh`
+安装扩展后，访问 `http://{your-domain}/thresh`
 
 ## Contributing
 

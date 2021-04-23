@@ -25,25 +25,39 @@ class ThreshRequest extends FormRequest
     {
         $rules = [
             'POST' => [
-                'title'       => 'required|max:191',
-                'type'        => 'required|integer',
-                'name'        => 'required|max:191',
-                'sort'        => 'required|integer',
-                'is_show'     => 'required|integer',
-                'thumb'       => 'required',
-                'enabled_at'  => 'bail|required|date',
-                'disabled_at' => 'bail|required|date',
+                'title'            => 'required|max:191',
+                'type'             => 'required|integer',
+                'name'             => 'required|max:191',
+                'sort'             => 'required|integer',
+                'is_show'          => 'required|integer',
+                'thumb'            => 'required',
+                'enabled_at'       => 'bail|required|date',
+                'disabled_at'      => 'bail|required|date',
+                'variants.*'       => 'bail|required|array',
+                'variants.*.title' => 'bail|required|max:191',
+                'variants.*.thumb' => 'bail|required|max:191',
+                'variants.*.price' => 'bail|required|numeric',
+                'variants.*.stock' => 'bail|required|integer|min:1',
             ],
             'PUT'  => [
-                'title'       => 'required|max:191',
-                'name'        => 'required|max:191',
-                'sort'        => 'required|integer',
-                'is_show'     => 'required|integer',
-                'thumb'       => 'required',
-                'enabled_at'  => 'bail|required|date',
-                'disabled_at' => 'bail|required|date',
+                'title'            => 'required|max:191',
+                'name'             => 'required|max:191',
+                'sort'             => 'required|integer',
+                'is_show'          => 'required|integer',
+                'thumb'            => 'required',
+                'enabled_at'       => 'bail|required|date',
+                'disabled_at'      => 'bail|required|date',
+                'variants.*'       => 'bail|required|array',
+                'variants.*.title' => 'bail|required|max:191',
+                'variants.*.thumb' => 'bail|required|max:191',
+                'variants.*.price' => 'bail|required|numeric',
+                'variants.*.stock' => 'bail|required|integer|min:1',
             ],
         ];
+
+        if ($this->method() === 'PATCH') {
+            $this->setMethod('PUT');
+        }
 
         return $rules[$this->method()] ?? [];
     }
