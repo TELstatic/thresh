@@ -3,7 +3,6 @@
 namespace TELstatic\Thresh\Controllers;
 
 use TELstatic\Thresh\Requests\ThreshRequest;
-use Illuminate\Http\Request;
 
 /**
  * 文档管理.

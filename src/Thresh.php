@@ -763,7 +763,8 @@ class Thresh
             $haystack = $this->formatDoc($methodDoc);
 
             if ($haystack) {
-                $methodDocs['title'] = $this->formatTitle($haystack) ?? $methodName;
+                $methodDocs['title'] = $this->formatTitle($haystack,
+                        $this->permissions[$controllerName]['title'] ?? $controllerName) ?? $methodName;
                 $methodDocs['desc'] = $this->formatDesc($haystack);
                 $methodDocs['params'] = $this->formatParams($haystack);
                 $methodDocs['returns'] = $this->formatReturns($haystack);
@@ -831,12 +832,42 @@ class Thresh
      * 格式化中文名称.
      *
      * @param $haystack
+     * @param null $prefix
      *
      * @return string|null
      */
-    protected function formatTitle($haystack)
+    protected function formatTitle($haystack, $prefix = null)
     {
-        return count($haystack) > 0 ? trim($haystack[0]) : null;
+        $title = count($haystack) > 0 ? trim($haystack[0]) : null;
+
+        if ($title) {
+            $title = $prefix.$this->transTitle($title);
+        }
+
+        return $title;
+    }
+
+    /**
+     * DcatAdmin 默认标题转化
+     * @desc DcatAdmin 默认标题转化
+     * @param $title
+     * @return string
+     * @author TELstatic
+     * Date: 2021/5/24/0024
+     */
+    public function transTitle($title)
+    {
+        $trans = [
+            'Index interface.'                            => '列表',
+            'Show interface.'                             => '详情',
+            'Edit interface.'                             => '编辑',
+            'Create interface.'                           => '创建',
+            'Update the specified resource in storage.'   => '更新',
+            'Store a newly created resource in storage.'  => '保存',
+            'Remove the specified resource from storage.' => '删除',
+        ];
+
+        return $trans[$title] ?? $title;
     }
 
     /**

@@ -48,7 +48,7 @@ class AuthenticateThresh
             return $next($request);
         }
 
-        $path = $this->formatPath($request->path());
+        $path = $this->formatPath($request->method().'-'.$request->path());
 
         if (!$this->guard()->user()->can($path)) {
             if ($request->ajax() || $request->wantsJson()) {
